@@ -69,41 +69,53 @@
         /* Rank Up Animation */
         .rank-up-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
             background: rgba(0, 0, 0, 0.95);
+            border: 3px solid #ffd700;
+            padding: 30px;
+            border-radius: 10px;
             display: none;
-            align-items: center;
-            justify-content: center;
             z-index: 2000;
-            animation: fadeIn 0.5s;
+            animation: slideInLeft 0.8s;
+            max-width: 300px;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
         }
 
         .rank-up-content {
             text-align: center;
-            animation: slideIn 1s;
         }
 
         .rank-up-title {
-            font-size: 3em;
+            font-size: 1.5em;
             color: #ffd700;
             text-transform: uppercase;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: glow 1s infinite;
         }
 
         .rank-up-subtitle {
-            font-size: 2em;
+            font-size: 1.2em;
             color: #ff3366;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .rank-badge {
-            font-size: 8em;
-            margin: 30px 0;
-            animation: rotate360 2s;
+            font-size: 3em;
+            margin: 15px 0;
+            animation: rotate360 1s;
+        }
+
+        @keyframes slideInLeft {
+            from { 
+                left: -400px;
+                opacity: 0;
+            }
+            to { 
+                left: 20px;
+                opacity: 1;
+            }
         }
 
         @keyframes fadeIn {
@@ -376,16 +388,22 @@
                 font-size: 2em;
             }
             
+            .rank-up-overlay {
+                left: 10px;
+                max-width: 250px;
+                padding: 20px;
+            }
+            
             .rank-up-title {
-                font-size: 2em;
+                font-size: 1.2em;
             }
             
             .rank-up-subtitle {
-                font-size: 1.5em;
+                font-size: 1em;
             }
             
             .rank-badge {
-                font-size: 5em;
+                font-size: 2.5em;
             }
             
             .hud {
@@ -453,12 +471,12 @@
         ];
 
         const carePackages = [
-            "I love you because you remind me whats important💘",
-            "I love you because I feel the safest in your arms.",
-            "I love you because I literally couldnt't function without you",
+            "I love you because you because you cried at the end of COCO💘",
+            "I love you because you buy me the expensive stuff I would NEVER buy for myself. I know it's you telling me I'm worth it. I deserve it.",
+            "I love you because our girls are the most important people in your life and I wouldn't have it any other way. them before me, always.",
             "I love you because maybe you were right. I do need you💕",
-            "I love you because you turn my bad days into good ones❤️",
-            "I love you because you are you. The bad, the good. the hard and the easy. You make it all worth it. "
+            "I love you because you tell me when I'm being a bish and I needed someone like that❤️",
+            "I love you because you changed for me and I know that probably wasn't easy for you, but you did it for me. "
         ];
 
         const slides = [
@@ -503,17 +521,18 @@
         let currentSlide = -1;
         let killstreak = 0;
         let currentRankIndex = 0;
+        let carePackageIndex = 0;
 
         function startMission() {
             document.getElementById('backgroundMusic').play();
             currentSlide = 0;
             killstreak = 0;
             currentRankIndex = 0;
+            carePackageIndex = 0;
             document.getElementById('hud').style.display = 'block';
             updateHUD();
             showSlide();
             spawnHearts();
-            scheduleCarePackage();
         }
 
         function updateHUD() {
@@ -536,8 +555,7 @@
             document.getElementById('rankUpOverlay').style.display = 'none';
         }
 
-        function showCarePackage() {
-            const message = carePackages[Math.floor(Math.random() * carePackages.length)];
+        function showCarePackage(message) {
             document.getElementById('carePackageMessage').textContent = message;
             const pkg = document.getElementById('carePackage');
             pkg.style.display = 'block';
@@ -547,15 +565,6 @@
 
         function closeCarePackage() {
             document.getElementById('carePackage').style.display = 'none';
-        }
-
-        function scheduleCarePackage() {
-            // Random care packages every 15-30 seconds
-            setInterval(() => {
-                if (currentSlide >= 0 && currentSlide < slides.length - 1 && Math.random() > 0.3) {
-                    showCarePackage();
-                }
-            }, 20000);
         }
 
         function showSlide() {
@@ -608,6 +617,14 @@
                 // Check for rank up
                 if (currentRankIndex < ranks.length - 1 && killstreak >= ranks[currentRankIndex + 1].killstreak) {
                     setTimeout(() => showRankUp(), 500);
+                }
+                
+                // Show care package (cycle through all messages)
+                if (carePackageIndex < carePackages.length) {
+                    setTimeout(() => {
+                        showCarePackage(carePackages[carePackageIndex]);
+                        carePackageIndex++;
+                    }, 1500); // Shows after rank up animation if there is one
                 }
                 
                 showSlide();
