@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation: Forever Yours</title>
+    <audio id="backgroundMusic" loop>
+    <source src="music/Vibra Perfecta.mp3" type="audio/mpeg">
+</audio>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d1f1f 100%);
+            color: #00ff00;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mission-screen {
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #00ff00;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+
+        .glitch {
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 2px 2px #ff0000, -2px -2px #00ffff; }
+            25% { text-shadow: -2px 2px #ff0000, 2px -2px #00ffff; }
+            50% { text-shadow: 2px -2px #ff0000, -2px 2px #00ffff; }
+            75% { text-shadow: -2px -2px #ff0000, 2px 2px #00ffff; }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff3366;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .mission-title {
+            font-size: 1.2em;
+            color: #00ff00;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 10px;
+        }
+
+        .photo-container {
+            width: 100%;
+            height: 400px;
+            background: #000;
+            border: 2px solid #00ff00;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .placeholder {
+            color: #00ff00;
+            font-size: 1.2em;
+            text-align: center;
+            opacity: 0.5;
+        }
+
+        .message {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin: 20px 0;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: #00ff00;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            color: #ff3366;
+            font-weight: bold;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff3366 0%, #ff6b6b 100%);
+            color: #fff;
+            border: 2px solid #00ff00;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff3366 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.8);
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .progress {
+            color: #00ff00;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+
+        .heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2em;
+            animation: float 4s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        .final-message {
+            font-size: 1.5em;
+            line-height: 2;
+            color: #ff3366;
+        }
+
+        .start-screen h1 {
+            font-size: 3em;
+        }
+
+        .start-screen p {
+            font-size: 1.2em;
+            margin: 20px 0;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="heart-container" id="heartContainer"></div>
+    
+    <div class="container">
+        <div class="mission-screen" id="missionScreen">
+            <!-- Start Screen -->
+            <div id="startScreen">
+                <h1 class="glitch">OPERATION: FOREVER YOURS</h1>
+                <p>🎯 CLASSIFIED MISSION FOR: ElDadBot</p>
+                <p>⚠️ PREPARE FOR DEPLOYMENT ⚠️</p>
+                <button onclick="startMission()">BEGIN MISSION</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CUSTOMIZE THESE SLIDES!
+        const slides = [
+            {
+                title: "Mission Briefing: Target Acquired",
+                message: "I knew you were mine from the moment I laid my eyes on you",
+                photo: "photos/5.jpeg",
+                stats: { label1: "Love Level", value1: "∞", label2: "Heart Rate", value2: "150 BPM" }
+            },
+            {
+                title: "Intel Report: Best Qualities",
+                message: "Your smile lights up my world like a tactical flashbang 💥",
+                photo: "photos/2.jpg",
+                stats: { label1: "Smile Power", value1: "MAX", label2: "Charm", value2: "9999" }
+            },
+            {
+                title: "Reconnaissance: Favorite Memories",
+                message: "Remember when we FINALLY got married? took you long enough 😉",
+                photo: "photos/3.jpg",
+                stats: { label1: "Happiness", value1: "100%", label2: "Laughter", value2: "Epic" }
+            },
+            {
+                title: "Status Update: Why I Love You",
+                message: "You are everything I could have hoped for in a man",
+                photo: "photos/1.jpg",
+                stats: { label1: "Awesomeness", value1: "Legendary", label2: "Love", value2: "MAX" }
+            },
+            {
+                title: "Mission Objective: Our Future",
+                message: "You + Me = favorite duo 🎮❤️",
+                photo: "photos/4.jpg",
+                stats: { label1: "Team Status", value1: "Unbeatable", label2: "Love Duration", value2: "Forever" }
+            },
+            {
+                title: "MISSION COMPLETE",
+                message: "Happy Valentine's Day, my love! You're my favorite teammate, my best adventure, and the reason I get that victory every day. I love you! 💕",
+                photo: "photos/6.jpeg",
+                stats: { label1: "Mission Status", value1: "SUCCESS", label2: "Love Status", value2: "ETERNAL" }
+            }
+        ];
+
+        let currentSlide = -1;
+
+        function startMission() {
+            document.getElementById('backgroundMusic').play();
+            currentSlide = 0;
+            showSlide();
+            spawnHearts();
+        }
+
+        function showSlide() {
+            const slide = slides[currentSlide];
+            const screen = document.getElementById('missionScreen');
+            
+            const isFinal = currentSlide === slides.length - 1;
+            
+            screen.innerHTML = `
+                <div class="mission-title">${slide.title}</div>
+                
+                ${slide.photo ? `
+                    <div class="photo-container">
+                        <img src="${slide.photo}" alt="Memory">
+                    </div>
+                ` : `
+                    <div class="photo-container">
+                        <div class="placeholder">📸 [ADD PHOTO HERE]</div>
+                    </div>
+                `}
+                
+                <div class="${isFinal ? 'final-message' : 'message'}">${slide.message}</div>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">${slide.stats.label1}</div>
+                        <div class="stat-value">${slide.stats.value1}</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">${slide.stats.label2}</div>
+                        <div class="stat-value">${slide.stats.value2}</div>
+                    </div>
+                </div>
+                
+                <div>
+                    ${currentSlide > 0 ? '<button onclick="prevSlide()">◀ PREVIOUS</button>' : ''}
+                    ${currentSlide < slides.length - 1 ? '<button onclick="nextSlide()">NEXT ▶</button>' : ''}
+                </div>
+                
+                <div class="progress">MISSION PROGRESS: ${currentSlide + 1}/${slides.length}</div>
+            `;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide();
+            }
+        }
+
+        function spawnHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                document.getElementById('heartContainer').appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 7000);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
