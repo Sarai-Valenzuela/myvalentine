@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operation: Forever Yours</title>
+    <title>Operation: Be My Valentine</title>
     <audio id="backgroundMusic" loop>
-    <source src="music/Vibra Perfecta.mp3" type="audio/mpeg">
-</audio>
+        <source src="music/Vibra Perfecta.mp3" type="audio/mpeg">
+    </audio>
     <style>
         * {
             margin: 0;
@@ -18,28 +18,171 @@
             font-family: 'Courier New', monospace;
             background: linear-gradient(135deg, #1a1a1a 0%, #2d1f1f 100%);
             color: #00ff00;
-            overflow: hidden;
-            height: 100vh;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-       .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow-y: auto;
-}
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
         .mission-screen {
-    background: rgba(0, 0, 0, 0.8);
-    border: 3px solid #00ff00;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
-}
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #00ff00;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            position: relative;
+        }
+
+        /* HUD Elements */
+        .hud {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            padding: 15px;
+            font-size: 0.9em;
+        }
+
+        .killstreak {
+            color: #ff3366;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .rank-display {
+            color: #ffd700;
+            font-size: 1em;
+            text-transform: uppercase;
+        }
+
+        /* Rank Up Animation */
+        .rank-up-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.5s;
+        }
+
+        .rank-up-content {
+            text-align: center;
+            animation: slideIn 1s;
+        }
+
+        .rank-up-title {
+            font-size: 3em;
+            color: #ffd700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: glow 1s infinite;
+        }
+
+        .rank-up-subtitle {
+            font-size: 2em;
+            color: #ff3366;
+            margin-bottom: 30px;
+        }
+
+        .rank-badge {
+            font-size: 8em;
+            margin: 30px 0;
+            animation: rotate360 2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700; }
+            50% { text-shadow: 0 0 40px #ffd700, 0 0 80px #ffd700; }
+        }
+
+        @keyframes rotate360 {
+            from { transform: rotate(0deg) scale(0.5); }
+            to { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Care Package */
+        .care-package {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #ff3366;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(255, 51, 102, 0.8);
+            z-index: 1500;
+            animation: carePackageDrop 2s;
+            display: none;
+            max-width: 400px;
+        }
+
+        @keyframes carePackageDrop {
+            0% {
+                top: -200px;
+                opacity: 0;
+                transform: rotate(-10deg);
+            }
+            60% {
+                top: 50%;
+                opacity: 1;
+            }
+            70% {
+                top: 45%;
+            }
+            100% {
+                top: 50%;
+                transform: translateY(-50%) rotate(0deg);
+            }
+        }
+
+        .care-package-title {
+            font-size: 1.5em;
+            color: #ff3366;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .care-package-message {
+            font-size: 1.2em;
+            color: #fff;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .care-package-close {
+            background: #ff3366;
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            text-transform: uppercase;
+        }
 
         .glitch {
             animation: glitch 2s infinite;
@@ -70,7 +213,8 @@
 
         .photo-container {
             width: 100%;
-            height: 400px;
+            max-height: 400px;
+            height: auto;
             background: #000;
             border: 2px solid #00ff00;
             margin: 20px 0;
@@ -83,7 +227,7 @@
 
         .photo-container img {
             max-width: 100%;
-            max-height: 100%;
+            max-height: 400px;
             object-fit: contain;
         }
 
@@ -92,6 +236,7 @@
             font-size: 1.2em;
             text-align: center;
             opacity: 0.5;
+            padding: 40px;
         }
 
         .message {
@@ -109,10 +254,12 @@
             padding: 15px;
             background: rgba(0, 255, 0, 0.1);
             border: 1px solid #00ff00;
+            flex-wrap: wrap;
         }
 
         .stat {
             text-align: center;
+            min-width: 120px;
         }
 
         .stat-label {
@@ -219,17 +366,75 @@
             margin: 20px 0;
             color: #fff;
         }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .start-screen h1 {
+                font-size: 2em;
+            }
+            
+            .rank-up-title {
+                font-size: 2em;
+            }
+            
+            .rank-up-subtitle {
+                font-size: 1.5em;
+            }
+            
+            .rank-badge {
+                font-size: 5em;
+            }
+            
+            .hud {
+                font-size: 0.8em;
+                padding: 10px;
+            }
+            
+            .message {
+                font-size: 1.1em;
+            }
+            
+            .photo-container {
+                max-height: 300px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="scanlines"></div>
     <div class="heart-container" id="heartContainer"></div>
     
+    <!-- HUD -->
+    <div class="hud" id="hud" style="display: none;">
+        <div class="killstreak">🎯 KILLSTREAK: <span id="killstreakCount">0</span></div>
+        <div class="rank-display">⭐ RANK: <span id="currentRank">HUSBAND</span></div>
+    </div>
+
+    <!-- Rank Up Overlay -->
+    <div class="rank-up-overlay" id="rankUpOverlay">
+        <div class="rank-up-content">
+            <div class="rank-up-title">RANK UP!</div>
+            <div class="rank-badge" id="rankBadge">⭐</div>
+            <div class="rank-up-subtitle" id="newRankName">DEVOTED HUSBAND</div>
+            <button onclick="closeRankUp()">CONTINUE MISSION</button>
+        </div>
+    </div>
+
+    <!-- Care Package -->
+    <div class="care-package" id="carePackage">
+        <div class="care-package-title">📦 CARE PACKAGE INCOMING!</div>
+        <div class="care-package-message" id="carePackageMessage"></div>
+        <button class="care-package-close" onclick="closeCarePackage()">COLLECT</button>
+    </div>
+    
     <div class="container">
         <div class="mission-screen" id="missionScreen">
             <!-- Start Screen -->
             <div id="startScreen">
-                <h1 class="glitch">OPERATION: FOREVER YOURS</h1>
+                <h1 class="glitch">OPERATION: BE MY VALENTINE</h1>
                 <p>🎯 CLASSIFIED MISSION FOR: ElDadBot</p>
                 <p>⚠️ PREPARE FOR DEPLOYMENT ⚠️</p>
                 <button onclick="startMission()">BEGIN MISSION</button>
@@ -238,7 +443,24 @@
     </div>
 
     <script>
-        // CUSTOMIZE THESE SLIDES!
+        const ranks = [
+            { name: "HUSBAND", badge: "⭐", killstreak: 0 },
+            { name: "DEVOTED HUSBAND", badge: "⭐⭐", killstreak: 1 },
+            { name: "AMAZING HUSBAND", badge: "⭐⭐⭐", killstreak: 2 },
+            { name: "EPIC HUSBAND", badge: "⭐⭐⭐⭐", killstreak: 3 },
+            { name: "LEGENDARY HUSBAND", badge: "⭐⭐⭐⭐⭐", killstreak: 4 },
+            { name: "ELITE HUSBAND", badge: "🏆", killstreak: 5 }
+        ];
+
+        const carePackages = [
+            "You make my heart do a 360 no-scope! 💘",
+            "Our love is stronger than any armor! 🛡️",
+            "You're the MVP of my life! 🏆",
+            "Headshot to my heart every time! 💕",
+            "Our relationship K/D ratio: UNBEATABLE! ❤️",
+            "You make every day a W! 🎮"
+        ];
+
         const slides = [
             {
                 title: "Mission Briefing: Target Acquired",
@@ -279,12 +501,61 @@
         ];
 
         let currentSlide = -1;
+        let killstreak = 0;
+        let currentRankIndex = 0;
 
         function startMission() {
             document.getElementById('backgroundMusic').play();
             currentSlide = 0;
+            killstreak = 0;
+            currentRankIndex = 0;
+            document.getElementById('hud').style.display = 'block';
+            updateHUD();
             showSlide();
             spawnHearts();
+            scheduleCarePackage();
+        }
+
+        function updateHUD() {
+            document.getElementById('killstreakCount').textContent = killstreak;
+            document.getElementById('currentRank').textContent = ranks[currentRankIndex].name;
+        }
+
+        function showRankUp() {
+            if (currentRankIndex < ranks.length - 1) {
+                currentRankIndex++;
+                const rank = ranks[currentRankIndex];
+                document.getElementById('rankBadge').textContent = rank.badge;
+                document.getElementById('newRankName').textContent = rank.name;
+                document.getElementById('rankUpOverlay').style.display = 'flex';
+                updateHUD();
+            }
+        }
+
+        function closeRankUp() {
+            document.getElementById('rankUpOverlay').style.display = 'none';
+        }
+
+        function showCarePackage() {
+            const message = carePackages[Math.floor(Math.random() * carePackages.length)];
+            document.getElementById('carePackageMessage').textContent = message;
+            const pkg = document.getElementById('carePackage');
+            pkg.style.display = 'block';
+            pkg.style.left = '50%';
+            pkg.style.transform = 'translateX(-50%)';
+        }
+
+        function closeCarePackage() {
+            document.getElementById('carePackage').style.display = 'none';
+        }
+
+        function scheduleCarePackage() {
+            // Random care packages every 15-30 seconds
+            setInterval(() => {
+                if (currentSlide >= 0 && currentSlide < slides.length - 1 && Math.random() > 0.3) {
+                    showCarePackage();
+                }
+            }, 20000);
         }
 
         function showSlide() {
@@ -331,6 +602,14 @@
         function nextSlide() {
             if (currentSlide < slides.length - 1) {
                 currentSlide++;
+                killstreak++;
+                updateHUD();
+                
+                // Check for rank up
+                if (currentRankIndex < ranks.length - 1 && killstreak >= ranks[currentRankIndex + 1].killstreak) {
+                    setTimeout(() => showRankUp(), 500);
+                }
+                
                 showSlide();
             }
         }
